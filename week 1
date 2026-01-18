@@ -1,0 +1,45 @@
+from pygame import *
+init()
+
+screen = display.set_mode((800, 600))
+clock = time.Clock()
+
+running = True
+while running:
+    for e in event.get():
+        if e.type == QUIT:
+            running = False
+
+    screen.fill((255,255,255))
+    
+    draw.rect(screen, (173,255,100), (0,500,800,100)) #grass
+    draw.rect(screen, (100,100,100), (0,300,800,200)) #road
+    draw.rect(screen, (173,216,255), (0,0,800,300)) #water
+    
+    x=0
+    while x < 800:
+      y=320
+      while y <500:
+        draw.rect(screen, (255,255,255), (x,y,5,2))
+        y=y+30
+      x=x+10
+    
+    
+    display.update()
+    clock.tick(60)
+
+    class Frog:
+        def __init__(self, x, y):
+            size = 50
+            self.img = image.load("frog.png")
+            self.img = transform.scale(self.img, (SIZE, SIZE))
+            self.rect = Rect(x, y, self.img.get_width(), self.img.get_height())
+        def draw(self, screen):
+            screen.blit(self.img, self.rect)
+        def update(self):
+            global width, height
+            # check boundaries
+            if self.rect.right + self.dx >= width or self.rect.left + self.dx <= 0:
+                self.dx = self.dx * -1
+                self.rect.x += self.dx
+    display.flip()
