@@ -1,0 +1,33 @@
+from pygame import *
+init()
+
+screen = display.set_mode((800, 600))
+clock = time.Clock()
+
+running = True
+while running:
+    for e in event.get():
+        if e.type == QUIT:
+            running = False
+
+    screen.fill((0, 0, 0))
+    display.update()
+    clock.tick(60)
+
+    class Frog:
+        def __init__(self, x, y):
+            size = 50
+            self.img = image.load("frog.png")
+            self.img = transform.scale(self.img, (SIZE, SIZE))
+            self.rect = Rect(x, y, self.img.get_width(), self.img.get_height())
+
+        def draw(self, screen):
+            screen.blit(self.img, self.rect)
+
+        def update(self):
+            global width, height
+            # check boundaries
+            if self.rect.right + self.dx >= width or self.rect.left + self.dx <= 0:
+                self.dx = self.dx * -1
+                self.rect.x += self.dx
+               
