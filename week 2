@@ -1,0 +1,116 @@
+from pygame import *
+init()
+
+screen = display.set_mode((800, 600))
+c=time.Clock()
+FPS=60
+game_over = False
+
+
+class Frog:
+        def __init__(self, x, y):
+            SIZE = 50
+            self.img = image.load("frog.png")
+            self.img = transform.scale(self.img, (SIZE, SIZE))
+            self.rect = Rect(x, y, self.img.get_width(), self.img.get_height())
+        def draw(self, screen):
+            screen.blit(self.img, self.rect)
+        def update(self):
+            global width, height
+            # check boundaries
+            if self.rect.right + self.dx >= width or self.rect.left + self.dx <= 0:
+                self.dx = self.dx * -1
+                self.rect.x += self.dx
+                
+        def checkForWallCollision(self):
+          return self.rect.right + self.dx >= width or self.rect.left + self.dx <= 0
+        def update(self):
+          self.rect.x += self.dx
+
+class Car:
+  def __init__(self,x,y):
+    self.car_img=image.load("car.png")
+    self.car_img = transform.scale(self.car_img, (90, 50))
+    self.car_rect = Rect(x,y, self.car_img.get_width(), self.car_img.get_height())
+  def appear(self,screen):
+    screen.blit(self.car_img, self.car_rect)
+
+
+
+x=375
+y=500
+
+frog = Frog(x,y)
+car1 = Car(0,300)
+car2 = Car(-200,350)
+car3 = Car(300,400)
+
+running = True
+while running:
+    for e in event.get():
+      
+        if e.type == QUIT:
+            running = False
+            
+        if e.type == KEYDOWN:
+          if e.key == K_UP:
+            frog.rect.y-=50
+          if e.key == K_DOWN:
+            frog.rect.y+=50
+          if e.key == K_LEFT:
+            frog.rect.x-=50
+          if e.key == K_RIGHT:
+            frog.rect.x+=50
+            
+    screen.fill((255,255,255)) 
+    
+
+      
+      
+    
+
+      
+
+    
+    draw.rect(screen, (173,255,100), (0,500,800,100)) #grass
+    draw.rect(screen, (100,100,100), (0,300,800,200)) #road
+    draw.rect(screen, (173,216,255), (0,0,800,300)) #water
+    
+    x=0
+    while x < 800:
+      y=350
+      while y <500:
+        draw.rect(screen, (255,255,255), (x,y,5,2))
+        y=y+50
+      x=x+10
+      
+      
+    if not game_over:
+      for car in [car1,car2,car3]:
+        car.car_rect.x += 5
+        if car.car_rect.x > 800:
+          car.car_rect.x = -car.car_rect.width
+          
+    for car in [car1,car2,car3]:
+      if not game_over:
+        car.appear(screen)
+      
+      frog_rect = frog.rect
+      car_rect = car1.car_rect
+      
+    if not game_over:
+      for car in [car1,car2,car3]:
+        if frog.rect.colliderect(car.car_rect):
+          print("Game over")
+          game_over = True
+          break
+
+      
+    
+
+        
+    c.tick(FPS)
+    car1.appear(screen)
+    frog.draw(screen)
+    display.flip()
+
