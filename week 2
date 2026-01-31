@@ -44,6 +44,7 @@ frog = Frog(x,y)
 car1 = Car(0,300)
 car2 = Car(-200,350)
 car3 = Car(300,400)
+car4 = Car(100, 450)
 
 running = True
 while running:
@@ -86,12 +87,12 @@ while running:
       
       
     if not game_over:
-      for car in [car1,car2,car3]:
+      for car in [car1,car2,car3,car4]:
         car.car_rect.x += 5
         if car.car_rect.x > 800:
           car.car_rect.x = -car.car_rect.width
           
-    for car in [car1,car2,car3]:
+    for car in [car1,car2,car3,car4]:
       if not game_over:
         car.appear(screen)
       
@@ -99,7 +100,7 @@ while running:
       car_rect = car1.car_rect
       
     if not game_over:
-      for car in [car1,car2,car3]:
+      for car in [car1,car2,car3,car4]:
         if frog.rect.colliderect(car.car_rect):
           print("Game over")
           game_over = True
